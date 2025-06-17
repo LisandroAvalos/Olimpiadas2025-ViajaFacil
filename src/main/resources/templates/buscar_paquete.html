@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Buscar Paquetes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="container mt-4">
+
+    <h2>Listado de Paquetes</h2>
+
+    <form method="get" action="#" class="mb-3">
+        <input type="number" name="id" placeholder="Buscar por ID" class="form-control mb-2" 
+               th:value="${param.id}" />
+        <button type="submit" class="btn btn-primary me-2">Buscar</button>
+        <a href="/jefe-ventas/paquetes/buscar" class="btn btn-secondary me-2">Mostrar todos</a>
+        <a href="/jefe-ventas/paquetes/nuevo" class="btn btn-success">Cargar nuevo paquete</a>
+    </form>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <table class="table table-striped" id="tablaPaquetes">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Destino</th>
+                <th>Precio</th>
+                <th>Cantidad de pasajeros</th>
+                <th>Inicio de estadia</th>
+                <th>Fin de estadia</th>
+                <th>Transporte</th>
+                <th>Descripcion</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="paquete : ${paquetes}">
+                <td th:text="${paquete.id}">ID</td>
+                <td th:text="${paquete.destination}">Destino</td>
+                <td th:text="${paquete.price}">Precio</td>
+                <td th:text="${paquete.passengers}">Pasajeros</td>
+                <td th:text="${paquete.start_date}">Inicio estadia</td>
+                <td th:text="${paquete.end_date}">Fin estadia</td>
+                <td th:text="${paquete.transport}">Transporte</td>
+                <td th:text="${paquete.description}">Descripcion</td>
+                <td>
+                    <a th:href="@{/jefe-ventas/paquetes/editar/{id}(id=${paquete.id})}" class="btn btn-sm btn-primary">Modificar</a>
+                    <a th:href="@{/jefe-ventas/paquetes/eliminar/{id}(id=${paquete.id})}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(paquetes)}">
+                <td colspan="9" class="text-center">No hay paquetes para mostrar</td>
+            </tr>
+        </tbody>
+    </table>
+	<script>
+		
+	</script>
+</body>
+</html>
