@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Eliminar Paquete</title>
+</head>
+<body>
+    <h1>Eliminar Paquete</h1>
+    <p>¿Estás seguro que querés eliminar el paquete <span th:text="${paquete.id}">ID</span>?</p>
+
+    <form th:action="@{/jefe-ventas/paquetes/eliminar/{id}(id=${paquete.id})}" method="post">
+		<input type="hidden" name="_method" value="delete" />
+
+        <button type="submit">Sí, eliminar</button>
+    </form>
+
+    <a th:href="@{/jefe-ventas/paquetes/buscar}">Cancelar</a>
+</body>
+</html>
