@@ -21,13 +21,14 @@ public class SpringSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register", "/register/**", "/css/**", "/js/**").permitAll()
-                .anyRequest().authenticated()
-            )
+        .authorizeHttpRequests(auth -> auth
+        	    .requestMatchers("/inicio", "/register/**", "/paquete/**", "/register", "/login", "/css/**", "/js/**").permitAll()
+        	    .requestMatchers("/jefe-ventas/**").hasRole("ADMIN")
+        	    .anyRequest().authenticated()
+        	)
             .formLogin(form -> form
                 .loginPage("/login") 
-                .defaultSuccessUrl("/jefe-ventas", true)
+                .defaultSuccessUrl("/inicio", true)
                 .permitAll()
             )
             .logout(logout -> logout

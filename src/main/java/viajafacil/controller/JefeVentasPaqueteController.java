@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import viajafacil.dto.TourPackageDTO;
 import viajafacil.service.TourPackageService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -20,14 +21,18 @@ public class JefeVentasPaqueteController {
     private TourPackageService tourPackageService;
 
     @GetMapping("/buscar")
-    public String listarPaquetes(Model model) {
-        model.addAttribute("paquetes", tourPackageService.findAll());
-        return "buscar_paquete";
-    }
-    
-    @GetMapping("/buscar/{id}")
-    public String BuscarPaqueteId(@PathVariable Long id, Model model) {
-        model.addAttribute("paquete", tourPackageService.findById(id));
+    public String buscarPaquetes(@RequestParam(name = "id", required = false) Long id, Model model) {
+        if (id != null) {
+            Optional<TourPackageDTO> paquete = tourPackageService.findById(id);
+            if (paquete.isPresent()) {
+                model.addAttribute("paquetes", List.of(paquete.get()));
+            } else {
+                model.addAttribute("paquetes", List.of());
+                model.addAttribute("error", "No se encontró un paquete con el ID: " + id);
+            }
+        } else {
+            model.addAttribute("paquetes", tourPackageService.findAll());
+        }
         return "buscar_paquete";
     }
 
