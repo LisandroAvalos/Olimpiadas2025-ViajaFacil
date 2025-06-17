@@ -1,5 +1,4 @@
 package viajafacil.service.implementation;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,13 +26,12 @@ public class TourPackageServiceImplementation implements TourPackageService{
 	}
 
 	@Override
-	public Optional<TourPackageDTO> findById(Long id) {
-		return tourPackageRepository.findById(id).map(this::mapToTourPackageDTO);
+	public TourPackageDTO findById(Long id) {
+		return tourPackageRepository.findById(id);
 	}
 
 	@Override
 	public void save(TourPackageDTO tourPackageDTO) {
-		
 		TourPackage tourPackage = new TourPackage();
 
 		tourPackage.setPassengers(tourPackageDTO.getPassengers());
