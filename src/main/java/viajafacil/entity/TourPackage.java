@@ -24,25 +24,10 @@ public class TourPackage {
 	private Long id;
 
     @Column(nullable = false)
-	private int passengers;
+	private int passangers;
 
     @Column(nullable = false)
 	private String destination;
-
-    @Column(nullable = false)
-	private String departure_place;
-    
-    @Column(nullable = false)
-	private String start_date;
-
-    @Column(nullable = false)
-	private String end_date;
-
-    @Column(nullable = false)
-	private String transport;
-
-    @Column(nullable = false)
-	private String description;
 
     @Column(nullable = false)
 	private BigDecimal price;

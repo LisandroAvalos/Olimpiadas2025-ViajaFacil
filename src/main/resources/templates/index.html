@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Inicio - ViajaFácil</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
-<body>
+<body class="container py-4">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
 	    <a class="navbar-brand" href="/inicio">ViajaFácil</a>
 	
@@ -20,13 +19,19 @@
 	        <li class="nav-item" sec:authorize="!isAuthenticated()">
 	            <a class="nav-link" href="/login">Iniciar Sesión</a>
 	        </li>
+			
 	        <li class="nav-item" sec:authorize="!isAuthenticated()">
 	            <a class="nav-link" href="/register">Registrarse</a>
 	        </li>
 	
+			<li class="nav-item" sec:authorize="isAuthenticated()">
+			    <a class="nav-link btn btn-primary text-black ms-2" href="/carrito/mostrar">Carrito</a>
+			</li>
+			
 	        <li class="nav-item" sec:authorize="isAuthenticated()">
 	            <span class="navbar-text me-2">Hola, <span sec:authentication="name"></span></span>
 	        </li>
+	
 	        <li class="nav-item" sec:authorize="isAuthenticated()">
 	            <form th:action="@{/logout}" method="post" class="d-inline">
 	                <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
@@ -34,42 +39,47 @@
 	        </li>
 	    </ul>
 	</nav>
+
+    <h1>Bienvenido a ViajaFácil</h1>
+    <p>Tu agencia de viajes online de confianza.</p>
+
+    <h2 class="mt-5 mb-4">Paquetes disponibles</h2>
 	
-	<h1>Bienvenido a ViajaFácil</h1>
-	<p>Tu agencia de viajes online de confianza.</p>
+	<form method="get" th:action="@{/inicio}" class="mb-3">
+		<input type="number" name="id" placeholder="Buscar por ID" class="form-control mb-2" th:value="${param.id}" />
+	    <button type="submit" class="btn btn-primary me-2">Buscar</button>
+	    <a href="/inicio" class="btn btn-secondary me-2">Mostrar todos</a>
+	</form>
 
-	<h2 class="mt-5 mb-4">Paquetes disponibles</h2>
-	<div class="row">
-	    <div class="col-md-4 mb-4" th:each="paquete : ${paquetes}">
-	        <div class="card h-100 shadow rounded">
-	            <!-- Imagen de ejemplo -->
-	            <img th:src="@{'https://placehold.co/600x400'}" class="card-img-top" alt="Imagen del paquete">
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-	            <div class="card-body">
-	                <h5 class="card-title text-primary fw-bold" th:text="${paquete.destination}">Destino</h5>
+    <table class="table table-striped" id="tablaPaquetes">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Destino</th>
+                <th>Precio</th>
+                <th>Cantidad de pasajeros</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="paquete : ${paquetes}">
+                <td th:text="${paquete.id}">ID</td>
+                <td th:text="${paquete.destination}">Destino</td>
+                <td th:text="${paquete.price}">Precio</td>
+                <td th:text="${paquete.passangers}">Pasajeros</td>
+				<td>
+				    <form th:action="@{/carrito/agregar}" method="post" style="margin:0;">
+				        <input type="hidden" name="idTourPackage" th:value="${paquete.id}" />
+				        <button type="submit" class="btn btn-sm btn-primary">Agregar al carrito</button>
+				    </form>
+				</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(paquetes)}">
+                <td colspan="4" class="text-center">No hay paquetes para mostrar</td>
+            </tr>
+        </tbody>
+    </table>
 
-	                <p class="card-text mb-1">
-	                    <strong>Descripción:</strong> <span th:text="${paquete.description}"></span>
-	                </p>
-	                <p class="card-text mb-1">
-	                    <strong>Fechas:</strong> 
-	                    <span th:text="${paquete.start_date}"></span> - 
-	                    <span th:text="${paquete.end_date}"></span>
-	                </p>
-	                <p class="card-text mb-1">
-	                    <strong>Transporte:</strong> <span th:text="${paquete.transport}"></span>
-	                </p>
-	                <p class="card-text mb-1">
-	                    <strong>Pasajeros:</strong> <span th:text="${paquete.passengers}"></span>
-	                </p>
-	                <p class="card-text mb-2">
-	                    <strong>Precio:</strong> $<span th:text="${paquete.price}"></span>
-	                </p>
-
-	                <a th:href="@{'/paquete/' + ${paquete.id}}" class="btn btn-outline-primary w-100">Ver detalles</a>
-	            </div>
-	        </div>
-	    </div>
-	</div>	
 </body>
 </html>

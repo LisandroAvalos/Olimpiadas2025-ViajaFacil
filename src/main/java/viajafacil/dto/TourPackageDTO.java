@@ -16,22 +16,10 @@ public class TourPackageDTO {
 	private Long id;
 
 	@Min(1)
-	private int passengers;
+	private int passangers;
 
 	@NotBlank
 	private String destination;
-
-	@NotBlank
-	private String start_date;
-
-	@NotBlank
-	private String end_date;
-
-	@NotBlank
-	private String transport;
-
-	@NotBlank
-	private String description;
 
 	@NotNull
 	private BigDecimal price;

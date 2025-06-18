@@ -53,11 +53,6 @@
                 <th>Destino</th>
                 <th>Precio</th>
                 <th>Cantidad de pasajeros</th>
-                <th>Inicio de estadia</th>
-                <th>Fin de estadia</th>
-                <th>Transporte</th>
-                <th>Descripcion</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -65,11 +60,7 @@
                 <td th:text="${paquete.id}">ID</td>
                 <td th:text="${paquete.destination}">Destino</td>
                 <td th:text="${paquete.price}">Precio</td>
-                <td th:text="${paquete.passengers}">Pasajeros</td>
-                <td th:text="${paquete.start_date}">Inicio estadia</td>
-                <td th:text="${paquete.end_date}">Fin estadia</td>
-                <td th:text="${paquete.transport}">Transporte</td>
-                <td th:text="${paquete.description}">Descripcion</td>
+                <td th:text="${paquete.passangers}">Pasajeros</td>
                 <td>
                     <a th:href="@{/jefe-ventas/paquetes/editar/{id}(id=${paquete.id})}" class="btn btn-sm btn-primary">Modificar</a>
                     <a th:href="@{/jefe-ventas/paquetes/eliminar/{id}(id=${paquete.id})}" class="btn btn-sm btn-danger">Eliminar</a>
@@ -80,8 +71,5 @@
             </tr>
         </tbody>
     </table>
-	<script>
-		
-	</script>
 </body>
 </html>

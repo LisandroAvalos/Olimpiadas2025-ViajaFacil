@@ -1,20 +1,25 @@
 package viajafacil.service.implementation;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import viajafacil.dto.TourPackageDTO;
 import viajafacil.entity.TourPackage;
 import viajafacil.repository.TourPackageRepository;
+import viajafacil.repository.CartItemRepository;
 import viajafacil.service.TourPackageService;
 
 @Service
 public class TourPackageServiceImplementation implements TourPackageService{
 
 	TourPackageRepository tourPackageRepository;
+	CartItemRepository cartItemRepository;
 	
-    public TourPackageServiceImplementation(TourPackageRepository tourPackageRepository) {
+    public TourPackageServiceImplementation(TourPackageRepository tourPackageRepository, CartItemRepository cartItemRepository) {
         this.tourPackageRepository = tourPackageRepository;
+        this.cartItemRepository = cartItemRepository;
     }
 	
 	@Override
@@ -27,19 +32,18 @@ public class TourPackageServiceImplementation implements TourPackageService{
 
 	@Override
 	public TourPackageDTO findById(Long id) {
-		return tourPackageRepository.findById(id);
+	    return tourPackageRepository.findById(id)
+	            .map(this::mapToTourPackageDTO)
+	            .orElse(null);
 	}
+
 
 	@Override
 	public void save(TourPackageDTO tourPackageDTO) {
 		TourPackage tourPackage = new TourPackage();
 
-		tourPackage.setPassengers(tourPackageDTO.getPassengers());
+		tourPackage.setPassangers(tourPackageDTO.getPassangers());
 		tourPackage.setDestination(tourPackageDTO.getDestination());
-		tourPackage.setStart_date(tourPackageDTO.getStart_date());
-		tourPackage.setEnd_date(tourPackageDTO.getEnd_date());
-		tourPackage.setTransport(tourPackageDTO.getTransport());
-		tourPackage.setDescription(tourPackageDTO.getDescription());
 		tourPackage.setPrice(tourPackageDTO.getPrice());
 		
 		tourPackageRepository.save(tourPackage);
@@ -52,12 +56,8 @@ public class TourPackageServiceImplementation implements TourPackageService{
 		
 		if(tourPackageOptional.isPresent()) {
 			TourPackage tourPackage = tourPackageOptional.get();
-			tourPackage.setPassengers(tourPackageDTO.getPassengers());
+			tourPackage.setPassangers(tourPackageDTO.getPassangers());
 			tourPackage.setDestination(tourPackageDTO.getDestination());
-			tourPackage.setStart_date(tourPackageDTO.getStart_date());
-			tourPackage.setEnd_date(tourPackageDTO.getEnd_date());
-			tourPackage.setTransport(tourPackageDTO.getTransport());
-			tourPackage.setDescription(tourPackageDTO.getDescription());
 			tourPackage.setPrice(tourPackageDTO.getPrice());
 			tourPackageRepository.save(tourPackage);
 		}
@@ -65,8 +65,10 @@ public class TourPackageServiceImplementation implements TourPackageService{
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(Long id) {
-		if(tourPackageRepository.existsById(id)) {
+		if (tourPackageRepository.existsById(id)) {
+			cartItemRepository.deleteByTourPackageId(id);
 			tourPackageRepository.deleteById(id);
 		}
 	}
@@ -74,12 +76,8 @@ public class TourPackageServiceImplementation implements TourPackageService{
 	private TourPackageDTO mapToTourPackageDTO(TourPackage tourPackage){
 		TourPackageDTO tourPackageDTO = new TourPackageDTO();
 		tourPackageDTO.setId(tourPackage.getId());
-		tourPackageDTO.setPassengers(tourPackage.getPassengers());
+		tourPackageDTO.setPassangers(tourPackage.getPassangers());
 		tourPackageDTO.setDestination(tourPackage.getDestination());
-		tourPackageDTO.setStart_date(tourPackage.getStart_date());
-		tourPackageDTO.setEnd_date(tourPackage.getEnd_date());
-		tourPackageDTO.setTransport(tourPackage.getTransport());
-		tourPackageDTO.setDescription(tourPackage.getDescription());
 		tourPackageDTO.setPrice(tourPackage.getPrice());
         return tourPackageDTO;
     }

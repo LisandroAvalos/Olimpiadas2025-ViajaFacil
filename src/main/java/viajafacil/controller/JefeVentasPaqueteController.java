@@ -11,7 +11,6 @@ import viajafacil.dto.TourPackageDTO;
 import viajafacil.service.TourPackageService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/jefe-ventas/paquetes")
@@ -23,18 +22,25 @@ public class JefeVentasPaqueteController {
     @GetMapping("/buscar")
     public String buscarPaquetes(@RequestParam(name = "id", required = false) Long id, Model model) {
         if (id != null) {
-            Optional<TourPackageDTO> paquete = tourPackageService.findById(id);
-            if (paquete.isPresent()) {
-                model.addAttribute("paquetes", List.of(paquete.get()));
-            } else {
+            try {
+                TourPackageDTO paquete = tourPackageService.findById(id);
+                if (paquete != null) {
+                    model.addAttribute("paquetes", List.of(paquete));
+                } else {
+                    model.addAttribute("paquetes", List.of());
+                    model.addAttribute("error", "No se encontró el paquete con id " + id);
+                }
+            } catch (IllegalArgumentException ex) {
                 model.addAttribute("paquetes", List.of());
-                model.addAttribute("error", "No se encontró un paquete con el ID: " + id);
+                model.addAttribute("error", ex.getMessage());
             }
         } else {
             model.addAttribute("paquetes", tourPackageService.findAll());
         }
         return "buscar_paquete";
     }
+
+
 
     // Formulario para crear nuevo paquete
     @GetMapping("/nuevo")
@@ -57,14 +63,15 @@ public class JefeVentasPaqueteController {
 
     @GetMapping("/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        Optional<TourPackageDTO> paqueteOptional = tourPackageService.findById(id);
-        if (paqueteOptional.isPresent()) {
-            model.addAttribute("paquete", paqueteOptional.get());
+        try {
+            TourPackageDTO paquete = tourPackageService.findById(id);
+            model.addAttribute("paquete", paquete);
             return "editar_paquete";
-        } else {
+        } catch (IllegalArgumentException ex) {
             return "redirect:/jefe-ventas/paquetes/buscar?error=notfound";
         }
     }
+
 
     @PostMapping("/editar/{id}")
     public String actualizarPaquete(@PathVariable Long id,
@@ -81,14 +88,15 @@ public class JefeVentasPaqueteController {
     
     @GetMapping("/eliminar/{id}")
     public String mostrarConfirmacionEliminar(@PathVariable Long id, Model model) {
-        Optional<TourPackageDTO> paqueteOpt = tourPackageService.findById(id);
-        if (paqueteOpt.isPresent()) {
-            model.addAttribute("paquete", paqueteOpt.get());
-            return "eliminar_paquete"; // nombre del html de confirmación
-        } else {
+        try {
+            TourPackageDTO paquete = tourPackageService.findById(id);
+            model.addAttribute("paquete", paquete);
+            return "eliminar_paquete";
+        } catch (IllegalArgumentException ex) {
             return "redirect:/jefe-ventas/paquetes/buscar?error=notfound";
         }
     }
+
     
     @PostMapping("/eliminar/{id}")
     public String eliminarPaquete(@PathVariable Long id) {
