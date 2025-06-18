@@ -16,8 +16,7 @@ public class HomeController {
     @Autowired
     private TourPackageService tourPackageService;
 
-    // Página principal con listado o búsqueda
-    @GetMapping("/inicio")
+    /**@GetMapping("/inicio")
     public String mostrarInicio(@RequestParam(value = "id", required = false) Long id, Model model) {
         if (id != null) {
             TourPackageDTO paquete = tourPackageService.findById(id);
@@ -31,9 +30,13 @@ public class HomeController {
             model.addAttribute("paquetes", tourPackageService.findAll());
         }
         return "index";
+    }*/
+    
+    @GetMapping("/inicio")
+    public String mostrarInicio(Model model) {
+        model.addAttribute("paquetes", tourPackageService.findAll());
+        return "index";
     }
-
-    // Mostrar detalle en otra ruta permitida
     @GetMapping("/paquete/{id}")
     public String verDetallePaquete(@PathVariable Long id, Model model) {
         TourPackageDTO paquete = tourPackageService.findById(id);

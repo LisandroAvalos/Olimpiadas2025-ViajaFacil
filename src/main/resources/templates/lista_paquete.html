@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>ViajaFácil - Paquetes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <a class="navbar-brand" href="/inicio">ViajaFácil</a>
+
+    <ul class="navbar-nav me-auto">
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+            <a class="nav-link" href="/jefe-ventas">Panel Ventas</a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav ms-auto">
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" href="/login">Iniciar Sesión</a>
+        </li>
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+            <a class="nav-link" href="/register">Registrarse</a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link btn btn-primary text-black ms-2" href="/carrito/mostrar">Carrito</a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <span class="navbar-text me-2">Hola, <span sec:authentication="name"></span></span>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
+            </form>
+        </li>
+    </ul>
+</nav>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Paquetes disponibles</h2>
+
+    <form method="get" th:action="@{/productos}" class="mb-3 d-flex gap-2">
+        <input type="number" name="id" placeholder="Buscar por ID" class="form-control w-25" th:value="${param.id}" />
+        <button type="submit" class="btn btn-primary">Buscar</button>
+        <a href="/productos" class="btn btn-secondary">Mostrar todos</a>
+    </form>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <table class="table table-striped">
+        <thead>
+			<thead>
+	            <tr>
+		            <th>ID</th>
+					<th>Cantidad de pasajeros</th>
+					<th>Destino</th>
+		            <th>Lugar de Salida</th>
+					<th>Fecha de Inicio</th>
+					<th>Fecha de Fin</th>
+					<th>Metodo de transporte</th>
+					<th>Descripcion</th>
+		            <th>Precio</th>
+	            </tr>
+        	</thead>
+	        <tbody>
+	            <tr th:each="paquete : ${paquetes}">
+	                <td th:text="${paquete.id}">ID</td>
+					<td th:text="${paquete.passangers}">Pasajeros</td>
+	                <td th:text="${paquete.destination}">Destino</td>
+					<td th:text="${paquete.departure_place}">Lugar de Salida</td>
+					<td th:text="${paquete.start_date}">Fecha de Inicio</td>
+					<td th:text="${paquete.end_date}">Fecha de Fin</td>
+					<td th:text="${paquete.transport}">Metodo de Transporte</td>
+					<td th:text="${paquete.description}">Descripcion</td>
+	                <td th:text="${paquete.price}">Precio</td>
+                <form th:action="@{/carrito/agregar}" method="post">
+                    <input type="hidden" name="idTourPackage" th:value="${paquete.id}" />
+                <button type="submit" class="btn btn-sm btn-primary">Agregar al carrito</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(paquetes)}">
+            <td colspan="5" class="text-center">No hay paquetes para mostrar</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

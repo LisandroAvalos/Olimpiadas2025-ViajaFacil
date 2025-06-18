@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
-
 import viajafacil.dto.CartItemDTO;
 import viajafacil.entity.User;
 import viajafacil.service.CartService;
@@ -28,7 +27,7 @@ public class CartController {
     @PostMapping("/carrito/agregar")
     public String agregarAlCarrito(@RequestParam Long idTourPackage, Authentication authentication) {
         if(authentication != null) {
-            String email = authentication.getName(); // email o username del usuario logueado
+            String email = authentication.getName();
             User user = userService.getByEmail(email);
             if(user != null) {
                 cartService.addItemToCart(user.getId(), idTourPackage);

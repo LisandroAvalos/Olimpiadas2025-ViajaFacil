@@ -107,10 +107,15 @@ public class CartServiceImplementation implements CartService{
 	        TourPackage tp = item.getTourPackage();
 	        if (tp != null) {
 	            CartItemDTO dto = new CartItemDTO();
-	            dto.setCartItemId(item.getId());
-	            dto.setDestination(tp.getDestination());
-	            dto.setPrice(tp.getPrice());
+	            dto.setId(item.getId());
 	            dto.setPassangers(tp.getPassangers());
+	            dto.setDestination(tp.getDestination());
+	            dto.setDeparture_place(tp.getDeparture_place());
+	            dto.setStart_date(tp.getStart_date());
+	            dto.setEnd_date(tp.getEnd_date());
+	            dto.setTransport(tp.getTransport());
+	            dto.setDescription(tp.getDescription());
+	            dto.setPrice(tp.getPrice());
 	            listDTO.add(dto);
 	        }
 	    }

@@ -43,23 +43,33 @@
 	    <h2>Listado de Paquetes en el Carrito</h2>
 		
 		<table class="table table-striped mt-3">
-	        <thead>
-	            <tr>
-	                <th>ID</th>
-	                <th>Destino</th>
-	                <th>Precio</th>
-	                <th>Cantidad de pasajeros</th>
-					<th>Eliminar</th>
-	            </tr>
-	        </thead>
-	        <tbody>
-	            <tr th:each="cartItem : ${cartItems}">
-	                <td th:text="${cartItem.cartItemId}">ID</td>
-	                <td th:text="${cartItem.destination}">Destino</td>
-	                <td th:text="${cartItem.price}">Precio</td>
-	                <td th:text="${cartItem.passangers}">Pasajeros</td>
-					<td>
-						<form th:action="@{'/carrito/item/eliminar/' + ${cartItem.cartItemId}}" method="post" onsubmit="return confirm('¿Eliminar este paquete del carrito?')">
+			<thead>
+			    <tr>
+			        <th>ID</th>
+					<th>Cantidad de pasajeros</th>
+					<th>Destino</th>
+			        <th>Lugar de Salida</th>
+					<th>Fecha de Inicio</th>
+					<th>Fecha de Fin</th>
+					<th>Metodo de transporte</th>
+					<th>Descripcion</th>
+			        <th>Precio</th>
+									<th>Eliminar</th>
+			    </tr>
+			</thead>
+			<tbody>
+			    <tr th:each="cartItem : ${cartItems}">
+					<td th:text="${cartItem.passangers}">Pasajeros</td>
+			        <td th:text="${cartItem.destination}">Destino</td>
+					<td th:text="${cartItem.departure_place}">Lugar de Salida</td>
+					<td th:text="${cartItem.start_date}">Fecha de Inicio</td>
+					<td th:text="${cartItem.end_date}">Fecha de Fin</td>
+					<td th:text="${cartItem.transport}">Metodo de Transporte</td>
+					<td th:text="${cartItem.description}">Descripcion</td>
+			        <td th:text="${cartItem.price}">Precio</td>
+					
+			        <td>
+						<form th:action="@{'/carrito/item/eliminar/' + ${cartItem.id}}" method="post" onsubmit="return confirm('¿Eliminar este paquete del carrito?')">
 						    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 						    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
 						</form>

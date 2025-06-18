@@ -2,7 +2,6 @@ package viajafacil.dto;
 
 import java.math.BigDecimal;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,12 +14,27 @@ public class TourPackageDTO {
 
 	private Long id;
 
-	@Min(1)
+    @NotNull
 	private int passangers;
 
-	@NotBlank
+    @NotBlank
 	private String destination;
 
-	@NotNull
+    @NotBlank
+	private String departure_place;
+    
+    @NotBlank
+	private String start_date;
+
+    @NotBlank
+	private String end_date;
+
+    @NotBlank
+	private String transport;
+
+    @NotBlank
+	private String description;
+
+    @NotNull
 	private BigDecimal price;
 }

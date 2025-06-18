@@ -45,12 +45,17 @@
                 <span th:text="${paquete.start_date}"></span> - 
                 <span th:text="${paquete.end_date}"></span>
             </p>
-            <p><strong>Transporte:</strong> <span th:text="${paquete.transport}"></span></p>
-            <p><strong>Pasajeros:</strong> <span th:text="${paquete.passengers}"></span></p>
+			<p><strong>Fecha de Salida:</strong> <span th:text="${paquete.departure_place}"></span></p>
+            <p><strong>Metodo de Transporte:</strong> <span th:text="${paquete.transport}"></span></p>
+            <p><strong>Pasajeros:</strong> <span th:text="${paquete.passangers}"></span></p>
             <p><strong>Precio:</strong> $<span th:text="${paquete.price}"></span></p>
-
-            <!-- Botón de acción futuro -->
-            <a href="#" class="btn btn-success mt-3">Reservar ahora</a>
+			
+			<td>
+			    <form th:action="@{/carrito/agregar}" method="post" style="margin:0;">
+			        <input type="hidden" name="idTourPackage" th:value="${paquete.id}" />
+			        <button type="submit" class="btn btn-sm btn-primary">Agregar al carrito</button>
+			    </form>
+			</td>
         </div>
     </div>
 </body>
