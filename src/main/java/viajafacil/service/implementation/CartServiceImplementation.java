@@ -32,17 +32,6 @@ public class CartServiceImplementation implements CartService{
 	}
 	
 	@Override
-	public void createCartForUser(Long idUser) {
-		Optional<User> userOp = userRepository.findById(idUser);
-		if(userOp.isPresent()) {
-			User user = userOp.get();
-			Cart cart = new Cart();
-			cart.setUser(user);
-			cartRepository.save(cart);	
-		}
-	}
-	
-	@Override
 	public void clearCartByUserId(Long idUser) {
 		Optional<Cart> cartOp = cartRepository.findByUserId(idUser);		
 		if(cartOp.isPresent()) {
@@ -102,24 +91,30 @@ public class CartServiceImplementation implements CartService{
 	        cartRepository.save(cart);
 	    }
 	    
-	    List<CartItemDTO> listDTO = new ArrayList<>();
-	    for(CartItem item : cart.getListCartItems()) {
-	        TourPackage tp = item.getTourPackage();
+	    List<CartItemDTO> listCartItemDTO = new ArrayList<>();
+	    for(CartItem cartItem : cart.getListCartItems()) {
+	        TourPackage tp = cartItem.getTourPackage();
 	        if (tp != null) {
-	            CartItemDTO dto = new CartItemDTO();
-	            dto.setId(item.getId());
-	            dto.setPassangers(tp.getPassangers());
-	            dto.setDestination(tp.getDestination());
-	            dto.setDeparture_place(tp.getDeparture_place());
-	            dto.setStart_date(tp.getStart_date());
-	            dto.setEnd_date(tp.getEnd_date());
-	            dto.setTransport(tp.getTransport());
-	            dto.setDescription(tp.getDescription());
-	            dto.setPrice(tp.getPrice());
-	            listDTO.add(dto);
+	            CartItemDTO cartItemDTO = new CartItemDTO();
+	            cartItemDTO.setId(cartItem.getId());
+	            cartItemDTO.setPassangers(tp.getPassangers());
+	            cartItemDTO.setDestination(tp.getDestination());
+	            cartItemDTO.setDeparture_place(tp.getDeparture_place());
+	            cartItemDTO.setStart_date(tp.getStart_date());
+	            cartItemDTO.setEnd_date(tp.getEnd_date());
+	            cartItemDTO.setTransport(tp.getTransport());
+	            cartItemDTO.setDescription(tp.getDescription());
+	            cartItemDTO.setPrice(tp.getPrice());
+	            listCartItemDTO.add(cartItemDTO);
 	        }
 	    }
-	    return listDTO;
+	    return listCartItemDTO;
+	}
+
+	@Override
+	public Cart getCartByUserId(Long userId) {
+	    return cartRepository.findByUserId(userId)
+	        .orElseThrow(() -> new RuntimeException("No se encontró el carrito del usuario con ID " + userId));
 	}
 
 }

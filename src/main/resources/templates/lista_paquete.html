@@ -6,37 +6,9 @@
     <title>ViajaFácil - Paquetes</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
-<body>
+<body class="container mt-4">
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
-    <a class="navbar-brand" href="/inicio">ViajaFácil</a>
-
-    <ul class="navbar-nav me-auto">
-        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
-            <a class="nav-link" href="/jefe-ventas">Panel Ventas</a>
-        </li>
-    </ul>
-
-    <ul class="navbar-nav ms-auto">
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="nav-link" href="/login">Iniciar Sesión</a>
-        </li>
-        <li class="nav-item" sec:authorize="!isAuthenticated()">
-            <a class="nav-link" href="/register">Registrarse</a>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-            <a class="nav-link btn btn-primary text-black ms-2" href="/carrito/mostrar">Carrito</a>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-            <span class="navbar-text me-2">Hola, <span sec:authentication="name"></span></span>
-        </li>
-        <li class="nav-item" sec:authorize="isAuthenticated()">
-            <form th:action="@{/logout}" method="post" class="d-inline">
-                <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
-            </form>
-        </li>
-    </ul>
-</nav>
+	<div th:replace="complementos/navbar :: navbar"></div>
 
 <div class="container mt-5">
     <h2 class="mb-4">Paquetes disponibles</h2>
@@ -75,10 +47,13 @@
 					<td th:text="${paquete.transport}">Metodo de Transporte</td>
 					<td th:text="${paquete.description}">Descripcion</td>
 	                <td th:text="${paquete.price}">Precio</td>
-                <form th:action="@{/carrito/agregar}" method="post">
-                    <input type="hidden" name="idTourPackage" th:value="${paquete.id}" />
-                <button type="submit" class="btn btn-sm btn-primary">Agregar al carrito</button>
-                </form>
+		            <td>
+						<form th:action="@{/carrito/agregar}" method="post">
+						    <input type="hidden" name="idTourPackage" th:value="${paquete.id}" />
+							<button type="submit" class="btn btn-sm btn-primary">Agregar al carrito</button>
+						</form>
+					</td>    
+
             </td>
         </tr>
         <tr th:if="${#lists.isEmpty(paquetes)}">

@@ -40,16 +40,12 @@ public class JefeVentasPaqueteController {
         return "buscar_paquete";
     }
 
-
-
-    // Formulario para crear nuevo paquete
     @GetMapping("/nuevo")
     public String mostrarFormularioNuevo(Model model) {
         model.addAttribute("paquete", new TourPackageDTO());
         return "nuevo_paquete";
     }
 
-    // Guardar nuevo paquete
     @PostMapping("/nuevo")
     public String guardarPaquete(@Valid @ModelAttribute("paquete") TourPackageDTO paqueteDTO,
                                  BindingResult result, Model model) {
