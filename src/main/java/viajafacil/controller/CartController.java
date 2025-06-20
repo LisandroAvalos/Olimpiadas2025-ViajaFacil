@@ -1,5 +1,7 @@
 package viajafacil.controller;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +52,21 @@ public class CartController {
             User user = userService.getByEmail(email);
             if(user != null) {
                 List<CartItemDTO> listCartItems = cartService.showCartByUserId(user.getId());
+
+                BigDecimal total = listCartItems.stream()
+                	    .map(CartItemDTO::getPrice)
+                	    .reduce(BigDecimal.ZERO, BigDecimal::add)
+                	    .setScale(2, RoundingMode.HALF_UP);
+
                 model.addAttribute("cartItems", listCartItems);
+                model.addAttribute("totalCompra", total); 
+
                 return "carrito";
             }
         }
         return "redirect:/inicio";
     }
+
 
     @PostMapping("/carrito/limpiar")
     public String limpiarCarrito(Authentication authentication) {

@@ -4,9 +4,9 @@
     <title>Carrito de Paquetes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
-<body class="container mt-4">
+<body>
 
-	<div th:replace="complementos/navbar :: navbar"></div>
+	<div th:replace="~{complementos/navbar :: navbar}"></div>
 
 	<div class="container mt-4">
 	    <h2>Listado de Paquetes en el Carrito</h2>
@@ -51,17 +51,18 @@
 	        </tbody>
 	    </table>
 
-	    <div class="d-flex justify-content-end align-items-center mt-3">
-			<form th:action="@{/carrito/limpiar}" method="post">
-			    <button type="submit" class="btn btn-success">Limpiar carrito</button>
-			</form>
-	        <div class="me-3 fs-5">
-	            Total: 
-	            <!--<span th:text="${#numbers.formatDecimal(paquetes.stream().mapToDouble(p -> p.price * p.passangers).sum(), 1, 'POINT', 2, 'NONE')}">0.00</span> -->
-	        </div>
+		<div class="d-flex justify-content-end align-items-center mt-3">
+		    <form th:action="@{/carrito/limpiar}" method="post">
+		        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		        <button type="submit" class="btn btn-success me-2">Limpiar carrito</button>
+		    </form>
+		    
+		    <div class="me-3 fs-5">
+		        Total: <span th:text="${totalCompra}">0.00</span> ARS
+		    </div>
 
-			<a class="nav-link btn btn-primary text-black ms-2" href="/nuevo-pago">Comprar</a>
-	    </div>
+		    <a class="nav-link btn btn-primary text-black ms-2" href="/nuevo-pago">Comprar</a>
+		</div>
 	</div>
 
 </body>
