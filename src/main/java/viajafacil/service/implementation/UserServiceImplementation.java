@@ -1,5 +1,6 @@
 package viajafacil.service.implementation;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,19 +33,22 @@ public class UserServiceImplementation implements UserService{
 	
 	@Override
 	public void saveUser(UserDto userDto) {
-		User user = new User();
-		
-		user.setName(userDto.getFirstName() + " " + userDto.getLastName());
-		user.setEmail(userDto.getEmail());
-		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		
-		Role role = roleRepository.findByName("ROLE_USER");
-        if(role == null){
-            role = checkRoleExist();
-        }
-        
-        user.setRoles(Arrays.asList(role));
-        userRepository.save(user);
+	    User user = new User();
+	    user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+	    user.setEmail(userDto.getEmail());
+	    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+	    String roleName = userDto.getRole() != null ? userDto.getRole() : "ROLE_USER";
+	    Role role = roleRepository.findByName(roleName);
+
+	    if (role == null) {
+	        role = new Role();
+	        role.setName(roleName);
+	        role = roleRepository.save(role);
+	    }
+
+	    user.setRoles(Arrays.asList(role));
+	    userRepository.save(user);
 	}
 
 	@Override
@@ -69,7 +73,7 @@ public class UserServiceImplementation implements UserService{
         return userDto;
     }
 	
-    private Role checkRoleExist(){
+	private Role checkRoleExist(){
         Role role = new Role();
         role.setName("ROLE_USER");
         return roleRepository.save(role);

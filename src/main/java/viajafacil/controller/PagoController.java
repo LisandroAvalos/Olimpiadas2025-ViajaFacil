@@ -49,7 +49,7 @@ public class PagoController {
         String email = authentication.getName();
         User user = userService.getByEmail(email);
         
-        Pago pago = pagoService.save(pagoDTO);
+        Pago pago = pagoService.save(pagoDTO, user);
         
         Cart cart = cartService.getCartByUserId(user.getId());
         

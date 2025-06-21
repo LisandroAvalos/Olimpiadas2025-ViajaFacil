@@ -48,12 +48,6 @@
             <div class="text-danger" th:if="${#fields.hasErrors('codeSec')}" th:errors="*{codeSec}"></div>
         </div>
 
-        <div class="mb-3">
-            <label for="totalPrice" class="form-label">Precio Total</label>
-            <input type="number" step="0.01" th:field="*{totalPrice}" class="form-control" min="0" required />
-            <div class="text-danger" th:if="${#fields.hasErrors('totalPrice')}" th:errors="*{totalPrice}"></div>
-        </div>
-
         <button type="submit" class="btn btn-primary">Pagar</button>
     </form>
 
