@@ -18,9 +18,6 @@ public class UserDto
     @NotEmpty
     private String lastName;
     
-    @NotEmpty
-    private String role;
-    
     @NotEmpty(message = "Email no puede estar vacio")
     @Email
     private String email;

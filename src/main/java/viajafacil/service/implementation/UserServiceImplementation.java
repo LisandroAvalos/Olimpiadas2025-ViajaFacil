@@ -38,14 +38,7 @@ public class UserServiceImplementation implements UserService{
 	    user.setEmail(userDto.getEmail());
 	    user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-	    String roleName = userDto.getRole() != null ? userDto.getRole() : "ROLE_USER";
-	    Role role = roleRepository.findByName(roleName);
-
-	    if (role == null) {
-	        role = new Role();
-	        role.setName(roleName);
-	        role = roleRepository.save(role);
-	    }
+	    Role role = roleRepository.findByName("ROLE_USER");
 
 	    user.setRoles(Arrays.asList(role));
 	    userRepository.save(user);
